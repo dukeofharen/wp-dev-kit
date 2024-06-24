@@ -1,0 +1,3 @@
+- Options instellen adv lokale options file.
+- wp-mail-smtp uitschakelen (?)
+- Dev plugin overzetten naar deze repo en altijd inschakelen.
