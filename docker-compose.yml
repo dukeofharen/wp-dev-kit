@@ -16,23 +16,23 @@ services:
       - "3306:3306"
     volumes:
       - ./data/db:/var/lib/mysql
-#  mysql-import:
-#    image: mysql:8
-#    depends_on:
-#      - mysql
-#    restart: on-failure
-#    environment:
-#      MYSQL_ROOT_PASSWORD: root
-#      MYSQL_DATABASE: wp_starter
-#    command: >
-#      /bin/sh -c '
-#      chmod +x ./wp-init/import-db.sh && ./wp-init/import-db.sh
-#      '
-#    volumes:
-#      - db_data:/var/lib/mysql
-#      - ./wp-init:/wp-init
-#      - ./restore:/etc/wp-starter/restore
-#      - cli_data:/etc/clidata
+  mysql-import:
+    image: mysql:8
+    depends_on:
+      - mysql
+    restart: on-failure
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: db
+    command: >
+      /bin/sh -c '
+      chmod +x ./wp-init/import-db.sh && ./wp-init/import-db.sh
+      '
+    volumes:
+      - ./data/db:/var/lib/mysql
+      - ./wp-init:/wp-init
+      - ./restore:/etc/wp-dev-kit/restore
+      - ./data/clidata:/etc/clidata
   phpmyadmin:
     image: phpmyadmin:5
     depends_on:

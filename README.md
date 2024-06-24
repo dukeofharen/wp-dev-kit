@@ -15,3 +15,10 @@ started. Using these URLs, you can reach the applications:
 
 You can also connect with the MySQL DB with your favourite DB tooling, by connecting with host `localhost` and
 port `3306`.
+
+### Restoring a "live" environment
+
+Part of WordPress development is working with actual data. To make this possible, import functionality has been built.
+To begin, make a complete dump of the MySQL database for the environment you want to import locally. Place it in
+the `restore` folder and call it `dump.sql`. Make sure nothing important is in your local dev DB, BECAUSE ALL TABLES
+WILL BE DELETED!
