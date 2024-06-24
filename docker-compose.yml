@@ -88,5 +88,6 @@ services:
       - ./wp-init:/wp-init
       - ./data/clidata:/etc/clidata
       - ./restore:/etc/wp-dev-kit/restore
+      - ./settings.json:/etc/wp-dev-kit/settings.json
 volumes:
   cli_data:

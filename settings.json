@@ -1,0 +1,13 @@
+{
+  "install_plugins": [],
+  "activate_plugins": [],
+  "disable_plugins": [
+    "wp-mail-smtp"
+  ],
+  "install_theme": "",
+  "activate_theme": "",
+  "options": {
+    "key1": "value1",
+    "key2": "value2"
+  }
+}

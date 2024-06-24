@@ -19,6 +19,17 @@ port `3306`.
 When starting the site, admin user `admin-user` will be added with password `pass`. You can log in
 here: <http://localhost:8000/wp-admin>.
 
+### Setting up the local dev environment
+
+To install, activate and disable plugins or themes, place them in the `settings.json` file. When starting the
+application, this file will be
+read to install or disable specific plugins. If you want to install plugins, pick the ID from the URL of the plugin
+page (e.g. https://wordpress.org/plugins/wp-mail-smtp/ will be `wp-mail-smtp` and same story with themes where
+URL https://wordpress.org/themes/twentysixteen/ will be `twentysixteen`).
+
+You can also set options which need to be added / updated in the `wp_options` table. You can provide them as a key /
+value object. Everytime the website starts, the options will be checked and added / updated.
+
 ### Restoring a "live" environment
 
 Part of WordPress development is working with actual data. To make this possible, import functionality has been built.

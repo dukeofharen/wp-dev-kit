@@ -1,9 +1,6 @@
 #!/bin/bash
 set -eu
 
-sleep 10
-php /wp-init/wp-init.php
-
 function restore() {
   FOLDER="/var/www/html/wp-content/$1"
   ZIP_FILE="/etc/wp-dev-kit/restore/$1.zip"
@@ -29,3 +26,6 @@ function restore() {
 restore "uploads"
 restore "plugins"
 restore "themes"
+
+sleep 10
+php /wp-init/wp-init.php

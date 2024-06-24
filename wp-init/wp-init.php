@@ -7,13 +7,19 @@ function render_var_dump($input)
     return ob_flush();
 }
 
-function execute($command)
+function execute($command, $ignore_exception = false)
 {
+    echo "Executing command '$command'.\n";
     $result_code = 0;
     $output = null;
     $result = exec($command, $output, $result_code);
     if (!$result && $result_code !== 0) {
-        throw new Exception("Command '" . $command . "' failed with exit code " . $result_code . "Output: " . render_var_dump($output));
+        $message = "Command '" . $command . "' failed with exit code " . $result_code . "Output: " . render_var_dump($output);
+        if ($ignore_exception) {
+            echo $message . "\n";
+        } else {
+            throw new Exception($message);
+        }
     }
 
     return $result;
@@ -58,6 +64,42 @@ if ($should_import_sql_dump) {
         echo exec("wp search-replace '" . $site_url . "' '" . $site_root_url . "' --allow-root");
 
         file_put_contents($sql_dump_updated_file, "ok");
+    }
+}
+
+// Setting up site with settings.
+$settings_path = "/etc/wp-dev-kit/settings.json";
+if (file_exists($settings_path)) {
+    echo "Reading file $settings_path.\n";
+    $settings = json_decode(file_get_contents($settings_path));
+    foreach ($settings->disable_plugins ?? [] as $disable) {
+        echo execute("wp plugin deactivate " . $disable . " --allow-root", true);
+    }
+
+    foreach ($settings->activate_plugins ?? [] as $activate) {
+        echo execute("wp plugin activate " . $activate . " --allow-root", true);
+    }
+
+    foreach ($settings->install_plugins as $install) {
+        echo execute("wp plugin install " . $install . " --activate --allow-root", true);
+    }
+
+    if (isset($settings->install_theme) && $settings->install_theme) {
+        echo execute("wp theme install " . $settings->install_theme . " --activate --allow-root", true);
+    }
+
+    if (isset($settings->activate_theme) && $settings->activate_theme) {
+        echo execute("wp theme activate " . $settings->activate_theme . " --allow-root", true);
+    }
+
+    if (isset($settings->options) && $settings->options) {
+        foreach ($settings->options as $key => $value) {
+            try {
+                echo execute("wp option add ".$key." ".$value." --allow-root");
+            } catch(Exception) {
+                echo execute("wp option update ".$key." ".$value." --allow-root", true);
+            }
+        }
     }
 }
 
