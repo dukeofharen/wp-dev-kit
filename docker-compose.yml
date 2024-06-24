@@ -8,7 +8,7 @@ services:
     volumes:
       - ./data/mailpit:/data
   mysql:
-    image: mysql:8
+    image: mariadb:latest
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: db
@@ -60,33 +60,33 @@ services:
 #      - ./wp-starter-plugin:/var/www/html/wp-content/plugins/wp-starter-plugin
       - ./config/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
   # https://stackoverflow.com/questions/50999848/how-to-run-wp-cli-in-docker-compose-yml
-#  wordpress-cli:
-#    depends_on:
-#      - mysql
-#      - wordpress
-#    image: wordpress:cli
-#    environment:
-#      WORDPRESS_DB_HOST: mysql
-#      WORDPRESS_DB_USER: root
-#      WORDPRESS_DB_PASSWORD: root
-#      WORDPRESS_DB_NAME: wp_starter
-#      SITE_ROOT_URL: http://localhost:8000
-#      SITE_TITLE: WP Starter
-#      ADMIN_USERNAME: user
-#      ADMIN_PASSWORD: pass
-#      ADMIN_EMAIL: info@ducode.org
-#    user: root
-#    restart: on-failure
-#    command: >
-#      /bin/sh -c '
-#      chmod +x /wp-init/wp-init.sh && /wp-init/wp-init.sh
-#      '
-#    volumes:
-#      - wp_data:/var/www/html
-#      - ./src:/var/www/html/wp-content/themes/wp-starter
-#      - ./wp-starter-plugin:/var/www/html/wp-content/plugins/wp-starter-plugin
-#      - ./wp-init:/wp-init
-#      - cli_data:/etc/clidata
-#      - ./restore:/etc/wp-starter/restore
+  wordpress-cli:
+    depends_on:
+      - mysql
+      - wordpress
+    image: wordpress:cli
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_USER: root
+      WORDPRESS_DB_PASSWORD: root
+      WORDPRESS_DB_NAME: db
+      SITE_ROOT_URL: http://localhost:8000
+      SITE_TITLE: WP Starter
+      ADMIN_USERNAME: admin-user
+      ADMIN_PASSWORD: pass
+      ADMIN_EMAIL: info@ducode.org
+    user: root
+    restart: on-failure
+    command: >
+      /bin/sh -c '
+      chmod +x /wp-init/wp-init.sh && /wp-init/wp-init.sh
+      '
+    volumes:
+      - ./data/wp:/var/www/html
+      - ./src:/var/www/html/wp-content/themes/wp-starter
+      - ./wp-starter-plugin:/var/www/html/wp-content/plugins/wp-starter-plugin
+      - ./wp-init:/wp-init
+      - ./data/clidata:/etc/clidata
+      - ./restore:/etc/wp-starter/restore
 volumes:
   cli_data:

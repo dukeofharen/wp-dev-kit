@@ -16,6 +16,9 @@ started. Using these URLs, you can reach the applications:
 You can also connect with the MySQL DB with your favourite DB tooling, by connecting with host `localhost` and
 port `3306`.
 
+When starting the site, admin user `admin-user` will be added with password `pass`. You can log in
+here: <http://localhost:8000/wp-admin>.
+
 ### Restoring a "live" environment
 
 Part of WordPress development is working with actual data. To make this possible, import functionality has been built.
