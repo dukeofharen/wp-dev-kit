@@ -83,10 +83,10 @@ services:
       '
     volumes:
       - ./data/wp:/var/www/html
-      - ./src:/var/www/html/wp-content/themes/wp-starter
-      - ./wp-starter-plugin:/var/www/html/wp-content/plugins/wp-starter-plugin
+#      - ./src:/var/www/html/wp-content/themes/wp-starter
+#      - ./wp-starter-plugin:/var/www/html/wp-content/plugins/wp-starter-plugin
       - ./wp-init:/wp-init
       - ./data/clidata:/etc/clidata
-      - ./restore:/etc/wp-starter/restore
+      - ./restore:/etc/wp-dev-kit/restore
 volumes:
   cli_data:

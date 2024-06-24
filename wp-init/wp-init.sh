@@ -1,32 +1,31 @@
 #!/bin/bash
 set -eu
-if [ -d "/var/www/html/wp-content/uploads" ]; then chown -R www-data:www-data /var/www/html/wp-content/uploads; fi
 
 sleep 10
 php /wp-init/wp-init.php
 
-#RESTORE_SITE_PATH="/etc/wp-starter/restore/site"
-#SITE_RESTORED_CHECK_PATH="/etc/clidata/site_restored"
-#SITE_ROOT_PATH="/var/www/html"
-#if [ -d "$RESTORE_SITE_PATH" ]; then
-#  if [ -f "$SITE_RESTORED_CHECK_PATH" ]; then
-#    echo "Site already restored."
-#  else
-#    echo "Restoring path $RESTORE_SITE_PATH"
-#    HTACCESS_PATH="$RESTORE_SITE_PATH/.htaccess"
-#    if [ -f "$HTACCESS_PATH" ]; then
-#      echo "Restoring $HTACCESS_PATH"
-#      cp $HTACCESS_PATH $SITE_ROOT_PATH
-#    fi
-#
-#    RESTORE_WP_CONTENT_PATH="$RESTORE_SITE_PATH/wp-content"
-#    if [ -d "$RESTORE_WP_CONTENT_PATH" ]; then
-#      echo "Restoring $RESTORE_WP_CONTENT_PATH"
-#      WP_CONTENT_PATH="$SITE_ROOT_PATH/wp-content"
-#      cp -r $RESTORE_WP_CONTENT_PATH/plugins $WP_CONTENT_PATH/plugins
-#      cp -r $RESTORE_WP_CONTENT_PATH/uploads $WP_CONTENT_PATH/uploads
-#    fi
-#
-#    touch $SITE_RESTORED_CHECK_PATH
-#  fi
-#fi
+function restore() {
+  FOLDER="/var/www/html/wp-content/$1"
+  ZIP_FILE="/etc/wp-dev-kit/restore/$1.zip"
+  CHECK_PATH="/etc/clidata/$1_restored"
+  if [ -f "$CHECK_PATH" ]; then
+    echo "File $CHECK_PATH found so file $ZIP_FILE is already restored."
+    return
+  fi
+
+  if [ -f "$ZIP_FILE" ]; then
+    echo "File $ZIP_FILE found; restoring it to $FOLDER."
+    if [ ! -d "$FOLDER" ]; then
+      echo "Creating folder $FOLDER"
+      mkdir "$FOLDER"
+    fi
+
+    unzip -od "$FOLDER" "$ZIP_FILE"
+    touch "$CHECK_PATH"
+    chown -R www-data:www-data "$FOLDER"
+  fi
+}
+
+restore "uploads"
+restore "plugins"
+restore "themes"

@@ -25,3 +25,9 @@ Part of WordPress development is working with actual data. To make this possible
 To begin, make a complete dump of the MySQL database for the environment you want to import locally. Place it in
 the `restore` folder and call it `dump.sql`. Make sure nothing important is in your local dev DB, BECAUSE ALL TABLES
 WILL BE DELETED!
+
+You can also restore the `plugins`, `uploads` and `themes` folders (all in the `wp-content` folder). Make sure to
+archive these folders (name the zip files `plugins.zip`, `uploads.zip` and `themes.zip` and put the contents of these
+folders in the root of the zip files) and place any of these zip files in the `restore` directory. When running the
+application, a check will be made if any of these zip files exist and the contents will be extracted to the right
+directory on your dev environment. Again, make sure to backup any important files because ALL FILES WILL BE OVERWRITTEN!
