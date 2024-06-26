@@ -35,10 +35,12 @@ value object. Everytime the website starts, the options will be checked and adde
 Part of WordPress development is working with actual data. To make this possible, import functionality has been built.
 To begin, make a complete dump of the MySQL database for the environment you want to import locally. Place it in
 the `restore` folder and call it `dump.sql`. Make sure nothing important is in your local dev DB, BECAUSE ALL TABLES
-WILL BE DELETED!
+WILL BE DELETED! Make sure any `USE DATABASE` or `CREATE DATABASE` command is removed from your `dump.sql` file.
 
 You can also restore the `plugins`, `uploads` and `themes` folders (all in the `wp-content` folder). Make sure to
 archive these folders (name the zip files `plugins.zip`, `uploads.zip` and `themes.zip` and put the contents of these
-folders in the root of the zip files) and place any of these zip files in the `restore` directory. When running the
+folders in the root of the zip files) and place any of these zip files in the `restore` directory. You can also place
+the `plugins`, `uploads` or `themes` folders in the `restore` folder. When running the
 application, a check will be made if any of these zip files exist and the contents will be extracted to the right
-directory on your dev environment. Again, make sure to backup any important files because ALL FILES WILL BE OVERWRITTEN!
+directory on your dev environment. Again, make sure to back up any important files because ALL FILES WILL BE
+OVERWRITTEN!

@@ -47,6 +47,7 @@ if (!$site_root_url) {
 $admin_user = getenv("ADMIN_USERNAME") ?? "admin-user";
 $admin_pass = getenv("ADMIN_PASSWORD") ?? "pass";
 $admin_mail = getenv("ADMIN_EMAIL") ?? "info@ducode.org";
+$db_prefix = getenv("WORDPRESS_TABLE_PREFIX") ?? "wp_";
 
 if ($should_import_sql_dump) {
     $sql_dump_updated_file = $metadata_path . "/sql_dump_updated";
@@ -59,7 +60,7 @@ if ($should_import_sql_dump) {
         echo "Handle SQL dump commands.\n";
 
         // Retrieve the current site URL and do a full search & replace on the database.
-        $site_url = execute("wp db query 'SELECT option_value FROM wp_options WHERE option_name=\"siteurl\"' --skip-column-names --allow-root");
+        $site_url = execute("wp db query 'SELECT option_value FROM " . $db_prefix . "options WHERE option_name=\"siteurl\"' --skip-column-names --allow-root");
         echo "Replacing all instances of $site_url with $site_root_url.\n";
         echo exec("wp search-replace '" . $site_url . "' '" . $site_root_url . "' --allow-root");
 
@@ -95,9 +96,9 @@ if (file_exists($settings_path)) {
     if (isset($settings->options) && $settings->options) {
         foreach ($settings->options as $key => $value) {
             try {
-                echo execute("wp option add ".$key." ".$value." --allow-root");
-            } catch(Exception) {
-                echo execute("wp option update ".$key." ".$value." --allow-root", true);
+                echo execute("wp option add " . $key . " " . $value . " --allow-root");
+            } catch (Exception) {
+                echo execute("wp option update " . $key . " " . $value . " --allow-root", true);
             }
         }
     }
